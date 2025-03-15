@@ -20,7 +20,7 @@ jobs:
         run: mkdir -p public/resources/images && cp -r ./images/* public/resources/images/
 
       - name: Add CNAME for Custom Domain
-        run: echo "foss.org" > public/CNAME
+        run: echo "fossuok.org" > public/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
