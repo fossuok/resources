@@ -20,10 +20,11 @@ jobs:
         run: mkdir -p public/resources/images && cp -r ./images/* public/resources/images/
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
+          publish_dir: ./public
+          publish_branch: gh-pages
 
       - name: Output Image URL
         run: echo "Images are now hosted at http://fossuok.org/resources/images/"
