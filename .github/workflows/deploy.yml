@@ -1,0 +1,37 @@
+name: Deploy Images to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build (if needed)
+        run: |
+          echo "No build step needed for images."
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./images
+          publish_branch: gh-pages
+
+      - name: Image Hosting URL
+        run: |
+          echo "Your images are now hosted at: https://github.com/fossuok/resources/images/"
