@@ -16,22 +16,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - name: Ensure Public Directory Exists
+        run: mkdir -p public/resources/images && cp -r ./images/* public/resources/images/
 
-      - name: Build (if needed)
-        run: |
-          echo "No build step needed for images."
+      - name: Add CNAME for Custom Domain
+        run: echo "foss.org" > public/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./images
+          publish_dir: ./public
           publish_branch: gh-pages
 
-      - name: Image Hosting URL
-        run: |
-          echo "Your images are now hosted at: https://github.com/fossuok/resources/images/"
+      - name: Output Image URL
+        run: echo "Images are now hosted at http://fossuok.org/resources/images/"
