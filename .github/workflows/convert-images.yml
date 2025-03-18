@@ -6,6 +6,7 @@ name: Convert Images to AVIF & WebP
 on:
   push:
     branches:
+      - main
       - dev
 
 jobs:
