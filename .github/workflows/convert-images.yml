@@ -1,7 +1,7 @@
 permissions:
   contents: write
 
-name: Convert Images to AVIF & WebP
+name: Convert Images to WebP
 
 on:
   push:
@@ -27,24 +27,14 @@ jobs:
 
       - name: Convert Images
         run: |
-          # Find images in supported formats
           find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | while read img; do
-            # Prepare output file names
-            avif_output="${img%.*}.avif"
             webp_output="${img%.*}.webp"
-            
-            # Convert to AVIF if not already done
-            if [ ! -f "$avif_output" ]; then
-              node -e "require('sharp')('$img').avif({ quality: 50 }).toFile('$avif_output').then(() => console.log('Converted to AVIF: $img'))"
-            fi
 
-            # Convert to WebP if not already done
             if [ ! -f "$webp_output" ]; then
               node -e "require('sharp')('$img').webp({ quality: 80 }).toFile('$webp_output').then(() => console.log('Converted to WebP: $img'))"
             fi
 
-            # Optionally, delete original image if both conversions exist
-            if [ -f "$avif_output" ] && [ -f "$webp_output" ]; then
+            if [ -f "$webp_output" ]; then
               rm "$img"
               echo "Removed original: $img"
             fi
@@ -58,6 +48,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Automated: Converted images to AVIF & WebP and removed originals"
+            git commit -m "Automated: Converted images to WebP and removed originals"
             git push
           fi
