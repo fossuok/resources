@@ -6,7 +6,6 @@ name: Convert Images to WebP
 on:
   push:
     branches:
-      - main
       - dev
 
 jobs:
