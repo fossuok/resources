@@ -1,0 +1,29 @@
+permissions:
+  contents: read
+
+name: Check Images Format
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check for Non-WebP Images
+        run: |
+          non_webp_files=$(find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \))
+
+          if [ -n "$non_webp_files" ]; then
+            echo "❌ The following non-WebP images were found:"
+            echo "$non_webp_files"
+            exit 1  # Fails the workflow
+          else
+            echo "✅ All images are in WebP format."
+          fi
