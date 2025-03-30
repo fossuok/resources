@@ -4,9 +4,9 @@ permissions:
 name: Convert Images to WebP
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - dev
 
 jobs:
   convert-images:
@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures commit history is available for pushing changes
 
       - name: Set Up Node.js
         uses: actions/setup-node@v4
@@ -30,7 +32,7 @@ jobs:
             webp_output="${img%.*}.webp"
 
             if [ ! -f "$webp_output" ]; then
-              node -e "require('sharp')('$img').webp({ quality: 80 }).toFile('$webp_output').then(() => console.log('Converted to WebP: $img'))"
+              node -e "require('sharp')('$img').webp({ quality: 80 }).toFile('$webp_output').then(() => console.log('Converted: $img'))"
             fi
 
             if [ -f "$webp_output" ]; then
