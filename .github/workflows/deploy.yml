@@ -17,7 +17,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Ensure Public Directory Exists
-        run: mkdir -p public/resources/images && cp -r ./images/* public/resources/images/
+        run: |
+          mkdir -p public/resources/images
+          rsync -av --ignore-missing-args ./images/ public/resources/images/
+
+      - name: Set Custom Domain
+        run: echo "resources.fossuok.org" > public/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -25,6 +30,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           publish_branch: gh-pages
+          force_orphan: true  # Ensures a clean branch
 
       - name: Output Image URL
-        run: echo "Images are now hosted at http://fossuok.org/resources/images/"
+        run: echo "Images are now hosted at https://resources.fossuok.org/images/"
